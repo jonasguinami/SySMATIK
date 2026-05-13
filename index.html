@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SySMATIK OS</title>
+    <!-- Ícone da Aba do Navegador (Favicon injetado direto no código) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%237A003C' d='M19 13v-3h-1V9h-1V6h-1V4h-1V3h-1V2h-1V1h-2v1h1v2h-1v2h-1v1H9v1H8v1H7v1H6v3h1v2H6v-1H5v-2H4v2H3v3h1v2h1v1h1v1h1v1h1v1h8v-1h1v-1h1v-1h1v-2h1v-5zm-2 7h-1v1h-2v1h-4v-1H9v-4h1v-1h1v-1h1v-1h1v-3h-1v-1h-1V9h1v1h2v2h1v5h-1v2h1v-1h1v-1h1z'/%3E%3C/svg%3E">
+    
+    <!-- Configurações de App Nativo (PWA) -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0F172A">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="sys-header">
+            <div class="logo-pill">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                    <polyline points="2 17 12 22 22 17"></polyline>
+                    <polyline points="2 12 12 17 22 12"></polyline>
+                </svg>
+                <span>SySMATIK</span>
+            </div>
+            <div class="header-actions">
+                <div class="clock-pill">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span id="clock">00:00:00</span>
+                </div>
+                <div class="cycle-pill" id="cycle-counter">D-30</div>
+                <button id="themeToggle" class="icon-btn">
+                    <svg id="theme-icon-sun" class="hidden" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg id="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Navegação Topo (Grid 4 colunas) -->
+        <nav class="sys-nav">
+            <button class="nav-btn active" data-target="agenda">AGENDA</button>
+            <button class="nav-btn" data-target="nova-op">NEW OPS</button>
+            <button class="nav-btn" data-target="relatorios">RELATÓRIO</button>
+            <button class="nav-btn" data-target="config">AJUSTE</button>
+        </nav>
+
+        <!-- Área de Conteúdo -->
+        <main class="sys-content">
+            
+            <!-- ABA: Agenda -->
+            <section id="agenda" class="tab-content active">
+                <h2 class="section-title">Operações Ativas</h2>
+                <div id="task-list" class="task-container"></div>
+            </section>
+
+            <!-- ABA: Nova Op -->
+            <section id="nova-op" class="tab-content">
+                <h2 class="section-title">Deploy de Operação</h2>
+                <form id="task-form" class="form-wrapper">
+                    <details class="sanfona-block" open>
+                        <summary>01. Setup Logístico <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                        <div class="sanfona-body">
+                            <div class="input-group">
+                                <label>Título da Operação</label>
+                                <input type="text" id="op-title" required placeholder="Ex: Auditoria de Processos">
+                            </div>
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label>Início</label>
+                                    <input type="time" id="op-time-start" required>
+                                </div>
+                                <div class="input-group">
+                                    <label>Término</label>
+                                    <input type="time" id="op-time-end" required>
+                                </div>
+                            </div>
+                            <div class="input-row">
+                                <div class="input-group">
+                                    <label>Setor</label>
+                                    <select id="op-sector" required></select>
+                                </div>
+                                <div class="input-group">
+                                    <label>Status da Tag</label>
+                                    <select id="op-color" required>
+                                        <option value="#10B981">Livre (Verde)</option>
+                                        <option value="#F59E0B">Atenção (Amarelo)</option>
+                                        <option value="#EF4444">Urgência (Vermelho)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                    <details class="sanfona-block">
+                        <summary>02. Golden Circle <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                        <div class="sanfona-body">
+                            <div class="input-group"><label>O quê?</label><input type="text" id="gc-what"></div>
+                            <div class="input-group"><label>Como?</label><input type="text" id="gc-how"></div>
+                            <div class="input-group"><label>Por quê?</label><input type="text" id="gc-why"></div>
+                        </div>
+                    </details>
+
+                    <details class="sanfona-block">
+                        <summary>03. Loop do Hábito <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                        <div class="sanfona-body">
+                            <div class="input-group"><label>Gatilho</label><input type="text" id="hl-trigger"></div>
+                            <div class="input-group"><label>Recompensa</label><input type="text" id="hl-reward"></div>
+                        </div>
+                    </details>
+
+                    <details class="sanfona-block">
+                        <summary>04. Automação <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg></summary>
+                        <div class="sanfona-body">
+                            <div class="input-group"><label>Esforço</label><input type="text" id="auto-effort"></div>
+                            <div class="input-group"><label>Etapas</label><input type="text" id="auto-steps"></div>
+                            <div class="input-group"><label>Confiança</label><input type="text" id="auto-confidence"></div>
+                            <div class="input-group"><label>Recompensa Real</label><input type="text" id="auto-realreward"></div>
+                        </div>
+                    </details>
+
+                    <button type="submit" class="btn-solid main-action">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        Deploy Operacional
+                    </button>
+                </form>
+            </section>
+
+            <!-- ABA: Relatórios -->
+            <section id="relatorios" class="tab-content">
+                <h2 class="section-title">Performance Central</h2>
+                <div class="kpi-dashboard">
+                    <div class="kpi-widget block" onclick="openKPIModal('Diário', 'daily')">
+                        <svg viewBox="0 0 36 36" class="radial-svg color-navy">
+                            <path class="radial-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path id="radial-daily" class="radial-value" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <text x="18" y="20.5" id="txt-daily" class="radial-text">0%</text>
+                        </svg>
+                        <span class="kpi-label">DIÁRIO</span>
+                    </div>
+                    <div class="kpi-widget block" onclick="openKPIModal('Semanal', 'weekly')">
+                        <svg viewBox="0 0 36 36" class="radial-svg color-bordeaux">
+                            <path class="radial-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path id="radial-weekly" class="radial-value" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <text x="18" y="20.5" id="txt-weekly" class="radial-text">0%</text>
+                        </svg>
+                        <span class="kpi-label">SEMANAL</span>
+                    </div>
+                    <div class="kpi-widget block" onclick="openKPIModal('Mensal', 'monthly')">
+                        <svg viewBox="0 0 36 36" class="radial-svg color-navy-light">
+                            <path class="radial-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path id="radial-monthly" class="radial-value" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <text x="18" y="20.5" id="txt-monthly" class="radial-text">0%</text>
+                        </svg>
+                        <span class="kpi-label">MENSAL</span>
+                    </div>
+                </div>
+                
+                <div class="action-grid">
+                    <button id="btn-export" class="btn-outline" style="margin-top: 0;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        Exportar JSON
+                    </button>
+                    <input type="file" id="file-import" accept=".json" class="hidden">
+                    <button id="btn-import" class="btn-outline" style="margin-top: 0;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        Importar JSON
+                    </button>
+                </div>
+
+                <h3 class="section-title" style="margin-top: 32px; font-size: 18px;">Histórico de Operações</h3>
+                <div id="history-list" class="task-container"></div>
+
+            </section>
+
+            <!-- ABA: Config Setores -->
+            <section id="config" class="tab-content">
+                <h2 class="section-title">Gerenciamento de Setores</h2>
+                <div class="block config-box">
+                    <div class="input-row-flex" style="align-items: stretch;">
+                        <input type="text" id="new-sector" placeholder="Novo Setor..." style="flex: 1;">
+                        <button id="btn-add-sector" class="btn-solid" style="width: auto; padding: 0 24px; border-radius: 14px;">Adicionar</button>
+                    </div>
+                    <div id="sector-list" class="sector-flex-list"></div>
+                </div>
+
+                <!-- NOVO: BOTÃO DE RESET -->
+                <div class="block config-box" style="margin-top: 16px; border-color: var(--bordeaux);">
+                    <h3 style="font-size: 14px; color: var(--bordeaux); margin-bottom: 4px;">Zona de Perigo</h3>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Apaga permanentemente todas as operações, setores e reseta o ciclo.</p>
+                    <button id="btn-reset-db" class="btn-outline" style="color: var(--bordeaux); border-color: var(--bordeaux); margin-top: 0;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        Resetar Banco de Dados
+                    </button>
+                </div>
+            </section>
+            
+        </main>
+    </div>
+
+    <!-- MODAL: Detalhes da Tarefa -->
+    <div id="task-modal" class="custom-modal hidden">
+        <div class="modal-card">
+            <div class="modal-top">
+                <div class="modal-badge"><span id="modal-sector">Setor</span></div>
+                <button class="close-modal btn-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <h3 id="modal-title" class="modal-title">Título</h3>
+            <div id="modal-body" class="modal-content-scroll"></div>
+        </div>
+    </div>
+
+    <!-- MODAL: Auditoria de KPI (Substitui o Alert nativo) -->
+    <div id="kpi-modal" class="custom-modal hidden">
+        <div class="modal-card kpi-card-focus">
+            <div class="modal-top">
+                <div class="modal-badge bordeaux">Auditoria de KPI</div>
+                <button class="close-kpi btn-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <h3 id="kpi-modal-title" class="modal-title" style="text-align: center; margin-top: 10px;">Status</h3>
+            <div id="kpi-modal-icon" class="kpi-status-icon"></div>
+            <p id="kpi-modal-message" class="kpi-message"></p>
+            <button class="btn-solid main-action close-kpi" style="margin-top: 20px;">Ciente</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
